@@ -69,8 +69,10 @@ app.use('/api/seed', seedRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`[StudioSpace Server] Running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[StudioSpace Server] Running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  });
+}
 
 export default app;
