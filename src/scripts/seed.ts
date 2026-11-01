@@ -254,8 +254,10 @@ export const initialStudios = [
 
 export const seedDatabase = async () => {
   try {
-    await mongoose.connect(MONGO_URI);
-    console.log('[Seed] Connected to MongoDB');
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(MONGO_URI);
+      console.log('[Seed] Connected to MongoDB');
+    }
 
     // Create default test examiner account
     const examinerEmail = 'examiner@studiospace.io';
