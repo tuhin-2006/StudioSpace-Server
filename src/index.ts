@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -16,8 +16,27 @@ const app: Application = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
 
-// Connect to MongoDB
-connectDB();
+// Trigger initial connection
+connectDB().catch((err) => {
+  console.warn('[MongoDB] Initial connection error (will retry on incoming request):', err.message);
+});
+
+// Middleware to ensure DB connection is ready before handling API requests
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  // Allow health check without DB wait if needed, but let's check DB for /api/ routes
+  if (req.path.startsWith('/api/') && req.path !== '/api/health') {
+    try {
+      await connectDB();
+    } catch (err: any) {
+      return res.status(503).json({
+        success: false,
+        message: 'Database connection is initializing or unavailable. Please try again shortly.',
+        error: err.message,
+      });
+    }
+  }
+  next();
+});
 
 // Middlewares
 app.use(
