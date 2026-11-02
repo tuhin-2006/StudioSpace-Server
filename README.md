@@ -2,6 +2,11 @@
 
 High-performance Express.js and TypeScript REST API powered by MongoDB for the **StudioSpace** peer-to-peer creative workspace & production studio sharing platform.
 
+- **Client GitHub Repository**: [https://github.com/tuhin-2006/StudioSpace-Client](https://github.com/tuhin-2006/StudioSpace-Client)
+- **Server GitHub Repository**: [https://github.com/tuhin-2006/StudioSpace-Server](https://github.com/tuhin-2006/StudioSpace-Server)
+- **Live Backend API URL**: [https://server-taupe-theta-15.vercel.app/api](https://server-taupe-theta-15.vercel.app/api)
+- **Live Frontend URL**: [https://client-mocha-theta-65.vercel.app](https://client-mocha-theta-65.vercel.app)
+
 ## 🌟 Features & Implemented Challenges
 - **Robust Security with HTTPOnly Cookies (Challenge 1)**: All state-changing mutations (`POST /api/studios`, `DELETE /api/studios/:id`, `PATCH /api/studios/:id`, `POST /api/bookings`) are protected using JSON Web Tokens (JWT) stored in HTTPOnly cookies to thwart XSS attacks, with 401 Unauthorized rejection for untrusted requests.
 - **Double-Booking Collision Prevention (Challenge 2)**: Advanced time-window collision detection algorithm (`newStart < existingEnd && newEnd > existingStart`) verifying incoming reservations against existing `Confirmed` bookings in MongoDB before committing slots.
